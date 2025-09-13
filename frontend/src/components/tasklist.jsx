@@ -1,85 +1,122 @@
 import React, { useState, useEffect } from "react";
+import api from "../api";
 
 export default function TaskList() {
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState("");
+  const [editingId, setEditingId] = useState(null);
+  const [editingTitle, setEditingTitle] = useState("");
 
-  // Buscar tarefas do backend
   useEffect(() => {
-  const fetchTasks = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/api/tasks");
-      if (!res.ok) {
-        throw new Error(`Erro HTTP: ${res.status}`);
+    const fetchTasks = async () => {
+      try {
+        const res = await api.get("/tasks");
+        setTasks(res.data);
+      } catch (err) {
+        console.error("Erro ao buscar tarefas:", err);
       }
-      const data = await res.json();
-      setTasks(data);
+    };
+    fetchTasks();
+  }, []);
+
+  const addTask = async () => {
+    if (!title.trim()) return;
+    try {
+      const res = await api.post("/tasks", { title });
+      setTasks([...tasks, res.data]);
+      setTitle("");
     } catch (err) {
-      console.error("Erro ao buscar tarefas:", err);
+      console.error("Erro ao criar tarefa:", err);
     }
   };
 
-  fetchTasks();
-}, []);
-
-
-  // Criar nova tarefa
-  const addTask = async () => {
-    if (!title.trim()) return;
-
-    const res = await fetch("http://localhost:5000/api/tasks", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title }),
-    });
-
-    const newTask = await res.json();
-    setTasks([...tasks, newTask]);
-    setTitle("");
-  };
-
-  // Alternar completed
   const toggleTask = async (id, completed) => {
-    const res = await fetch(`http://localhost:5000/api/tasks/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ completed: !completed }),
-    });
-
-    const updatedTask = await res.json();
-    setTasks(tasks.map((task) => (task.id === id ? updatedTask : task)));
+    try {
+      const res = await api.put(`/tasks/${id}`, { completed: !completed });
+      setTasks(tasks.map((task) => (task.id === id ? res.data : task)));
+    } catch (err) {
+      console.error("Erro ao atualizar tarefa:", err);
+    }
   };
 
-  // Deletar tarefa
   const deleteTask = async (id) => {
-    await fetch(`http://localhost:5000/api/tasks/${id}`, { method: "DELETE" });
-    setTasks(tasks.filter((task) => task.id !== id));
+    try {
+      await api.delete(`/tasks/${id}`);
+      setTasks(tasks.filter((task) => task.id !== id));
+    } catch (err) {
+      console.error("Erro ao deletar tarefa:", err);
+    }
+  };
+
+  const startEdit = (task) => {
+    setEditingId(task.id);
+    setEditingTitle(task.title);
+  };
+
+  const cancelEdit = () => {
+    setEditingId(null);
+    setEditingTitle("");
+  };
+
+  const saveEdit = async (id) => {
+    if (!editingTitle.trim()) return;
+    try {
+      const res = await api.put(`/tasks/${id}`, { title: editingTitle });
+      setTasks(tasks.map((task) => (task.id === id ? res.data : task)));
+      setEditingId(null);
+      setEditingTitle("");
+    } catch (err) {
+      console.error("Erro ao salvar edição:", err);
+    }
   };
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div className="container">
       <h1>Gerenciador de Tarefas</h1>
-
       <input
         type="text"
         placeholder="Digite uma tarefa"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            addTask();
+          }
+        }}
       />
       <button onClick={addTask}>Adicionar</button>
-
       <ul>
         {tasks.map((task) => (
           <li key={task.id}>
-            <input
-              type="checkbox"
-              checked={task.completed}
-              onChange={() => toggleTask(task.id, task.completed)}
-            />
-            <span style={{ textDecoration: task.completed ? "line-through" : "none" }}>
-              {task.title}
-            </span>
-            <button onClick={() => deleteTask(task.id)}>❌</button>
+            {editingId === task.id ? (
+              <>
+                <input
+                  type="text"
+                  value={editingTitle}
+                  onChange={(e) => setEditingTitle(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      saveEdit(task.id);
+                    }
+                  }}
+                />
+                <button onClick={() => saveEdit(task.id)}>Salvar</button>
+                <button onClick={cancelEdit}>Cancelar</button>
+              </>
+            ) : (
+              <>
+                <input
+                  type="checkbox"
+                  checked={task.completed}
+                  onChange={() => toggleTask(task.id, task.completed)}
+                />
+                <span style={{ textDecoration: task.completed ? "line-through" : "none" }}>
+                  {task.title}
+                </span>
+                <button onClick={() => startEdit(task)}>✏️</button>
+                <button onClick={() => deleteTask(task.id)}>❌</button>
+              </>
+            )}
           </li>
         ))}
       </ul>
