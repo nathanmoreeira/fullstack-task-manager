@@ -1,5 +1,11 @@
 # Gerenciador de Tarefas Fullstack
 
+<p align="left">
+  <img src="https://img.shields.io/badge/STATUS-CONCLUÍDO-green?style=for-the-badge" alt="Status do Projeto"/>
+  <img src="https://img.shields.io/badge/LINGUAGEM-JAVASCRIPT-yellow?style=for-the-badge" alt="Linguagem"/>
+  <img src="https://img.shields.io/badge/LICENSE-MIT-blue?style=for-the-badge" alt="Licença"/>
+</p>
+
 Este é um gerenciador de tarefas completo (CRUD) desenvolvido para fins de portfólio. A aplicação é construída com um backend robusto em Node.js e um frontend dinâmico em React.
 
 ## Funcionalidades
