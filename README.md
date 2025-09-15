@@ -6,6 +6,8 @@
   <img src="https://img.shields.io/badge/LICENSE-MIT-blue?style=for-the-badge" alt="Licença"/>
 </p>
 
+![Demo do Gerenciador de Tarefas](demo-tarefas.gif)
+
 Este é um gerenciador de tarefas completo (CRUD) desenvolvido para fins de portfólio. A aplicação é construída com um backend robusto em Node.js e um frontend dinâmico em React.
 
 ## Funcionalidades
