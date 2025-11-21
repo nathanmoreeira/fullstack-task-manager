@@ -35,6 +35,21 @@ Este é um gerenciador de tarefas completo (CRUD) desenvolvido para fins de port
 - **Vite**: Ferramenta de build para o ambiente de desenvolvimento.
 - **CSS**: Para estilização personalizada.
 
+## Arquitetura e Decisões Técnicas
+
+Este projeto foi estruturado com foco em escalabilidade e boas práticas de desenvolvimento web:
+
+* **Backend (MVC):** A API segue uma arquitetura em camadas (Routes -> Controllers -> Services -> Repository). Isso garante que a lógica de negócios não se misture com a lógica de roteamento ou de acesso ao banco de dados, facilitando manutenção e testes.
+* **Banco de Dados (SQL):** A escolha pelo **PostgreSQL** deve-se à natureza relacional dos dados (usuários possuem tarefas) e à necessidade de integridade referencial (ACID), garantindo consistência superior a soluções NoSQL para este domínio.
+* **Frontend Moderno:** Utilização de **Vite** para um ambiente de desenvolvimento rápido e build otimizado.
+* **Segurança:** Implementação de variáveis de ambiente (`dotenv`) para proteger credenciais sensíveis e `cors` configurado para gerenciar o acesso à API de forma segura.
+
+## Próximos Passos (Roadmap)
+
+* [ ] Migração completa para **TypeScript** para garantir tipagem estática e reduzir bugs em tempo de execução.
+* [ ] Implementação de testes unitários e de integração.
+* [ ] Containerização da aplicação com **Docker** para padronizar o ambiente de desenvolvimento.
+
 ## Como Rodar o Projeto
 
 Siga os passos abaixo para iniciar o backend e o frontend da aplicação.
