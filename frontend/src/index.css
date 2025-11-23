@@ -1,24 +1,126 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+}
+
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: #f5f5f5; /* fundo cinza claro */
-  color: #333;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  justify-content: center;
+}
+
+.container {
+  background: #1a1a1a;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  width: 450px;
+  text-align: center;
 }
 
 h1 {
-  color: #222;
+  font-size: 2em;
+  margin-bottom: 2rem;
+  color: #646cff;
+  font-weight: 600;
 }
 
-button {
-  margin-left: 8px;
-  padding: 4px 8px;
-  background-color: #007bff;
+/* --- O Segredo do Input Lado a Lado --- */
+.input-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 2rem;
+}
+
+input[type="text"] {
+  flex-grow: 1; /* Ocupa todo o espaço disponível */
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  border: 2px solid #333;
+  background: #2a2a2a;
   color: white;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+  outline: none;
+}
+
+input[type="text"]:focus {
+  border-color: #646cff;
+}
+
+/* Botão Principal (Adicionar/Salvar) */
+button {
+  border-radius: 8px;
   border: none;
-  border-radius: 4px;
+  padding: 0.8rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: #646cff;
+  color: white;
   cursor: pointer;
+  transition: all 0.25s;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #535bf2;
+  transform: translateY(-1px);
+}
+
+/* --- Lista de Tarefas --- */
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+li {
+  background: #2a2a2a;
+  margin-bottom: 12px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #333;
+  transition: transform 0.2s;
+}
+
+li:hover {
+  border-color: #444;
+  transform: translateX(2px);
+}
+
+li span {
+  flex-grow: 1;
+  margin-left: 12px;
+  font-size: 1.1rem;
+}
+
+input[type="checkbox"] {
+  transform: scale(1.2);
+  cursor: pointer;
+  accent-color: #646cff;
+}
+
+/* Botões de Ação (Lápis e Lixo) - Limpos e sem fundo */
+li button {
+  padding: 6px;
+  margin-left: 4px;
+  font-size: 1.1rem;
+  background: transparent; /* Fundo transparente */
+  color: #888;
+  border: none;
+}
+
+li button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
 }

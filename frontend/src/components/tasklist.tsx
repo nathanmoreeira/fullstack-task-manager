@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from "react";
 import api from "../api";
 
+// 1. Definimos o formato que uma Tarefa deve ter
+interface Task {
+  id: number;
+  title: string;
+  completed: boolean;
+}
+
 export default function TaskList() {
-  const [tasks, setTasks] = useState([]);
+  // 2. Dizemos ao useState que ele vai guardar uma lista de 'Task'
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [title, setTitle] = useState("");
-  const [editingId, setEditingId] = useState(null);
+  
+  // 3. O ID pode ser um número ou nulo (quando ninguém está sendo editado)
+  const [editingId, setEditingId] = useState<number | null>(null);
   const [editingTitle, setEditingTitle] = useState("");
 
   useEffect(() => {
@@ -23,6 +33,7 @@ export default function TaskList() {
     if (!title.trim()) return;
     try {
       const res = await api.post("/tasks", { title });
+      // O TypeScript agora sabe que res.data é do tipo Task
       setTasks([...tasks, res.data]);
       setTitle("");
     } catch (err) {
@@ -30,7 +41,8 @@ export default function TaskList() {
     }
   };
 
-  const toggleTask = async (id, completed) => {
+  // Tipamos explicitamente os parâmetros id e completed
+  const toggleTask = async (id: number, completed: boolean) => {
     try {
       const res = await api.put(`/tasks/${id}`, { completed: !completed });
       setTasks(tasks.map((task) => (task.id === id ? res.data : task)));
@@ -39,7 +51,7 @@ export default function TaskList() {
     }
   };
 
-  const deleteTask = async (id) => {
+  const deleteTask = async (id: number) => {
     try {
       await api.delete(`/tasks/${id}`);
       setTasks(tasks.filter((task) => task.id !== id));
@@ -48,7 +60,7 @@ export default function TaskList() {
     }
   };
 
-  const startEdit = (task) => {
+  const startEdit = (task: Task) => {
     setEditingId(task.id);
     setEditingTitle(task.title);
   };
@@ -58,7 +70,7 @@ export default function TaskList() {
     setEditingTitle("");
   };
 
-  const saveEdit = async (id) => {
+  const saveEdit = async (id: number) => {
     if (!editingTitle.trim()) return;
     try {
       const res = await api.put(`/tasks/${id}`, { title: editingTitle });
@@ -73,18 +85,20 @@ export default function TaskList() {
   return (
     <div className="container">
       <h1>Gerenciador de Tarefas</h1>
-      <input
-        type="text"
-        placeholder="Digite uma tarefa"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            addTask();
-          }
-        }}
-      />
-      <button onClick={addTask}>Adicionar</button>
+      <div className="input-group">
+        <input
+          type="text"
+          placeholder="Digite uma tarefa"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              addTask();
+            }
+          }}
+        />
+        <button onClick={addTask}>Adicionar</button>
+      </div>
       <ul>
         {tasks.map((task) => (
           <li key={task.id}>

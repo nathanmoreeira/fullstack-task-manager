@@ -1,10 +1,8 @@
 import TaskList from "./components/tasklist";
-import "./App.css"; // Importe o arquivo CSS aqui
+import "./App.css";
 
 export default function App() {
   return (
-    <>
-      <TaskList />
-    </>
+    <TaskList />
   );
 }
