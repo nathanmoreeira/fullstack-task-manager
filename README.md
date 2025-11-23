@@ -2,7 +2,7 @@
 
 <p align="left">
   <img src="https://img.shields.io/badge/STATUS-CONCLUÍDO-green?style=for-the-badge" alt="Status do Projeto"/>
-  <img src="https://img.shields.io/badge/LINGUAGEM-JAVASCRIPT-yellow?style=for-the-badge" alt="Linguagem"/>
+  <img src="https://img.shields.io/badge/LINGUAGEM-TYPESCRIPT-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="Linguagem"/>
   <img src="https://img.shields.io/badge/LICENSE-MIT-blue?style=for-the-badge" alt="Licença"/>
 </p>
 
@@ -46,7 +46,7 @@ Este projeto foi estruturado com foco em escalabilidade e boas práticas de dese
 
 ## Próximos Passos (Roadmap)
 
-* [ ] Migração completa para **TypeScript** para garantir tipagem estática e reduzir bugs em tempo de execução.
+* [X] Migração completa para **TypeScript** para garantir tipagem estática e reduzir bugs em tempo de execução.
 * [ ] Implementação de testes unitários e de integração.
 * [ ] Containerização da aplicação com **Docker** para padronizar o ambiente de desenvolvimento.
 
